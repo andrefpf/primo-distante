@@ -52,9 +52,8 @@ class RandomGenerator:
 
             if remaining_block:
                 val <<= remaining_block
-                val |= next(self.generator_32) % remaining_block
+                val |= next(self.generator_32) % (1 << remaining_block)
 
-            val |= 1 << (self.num_bits - 1)
             yield val
 
     def __next__(self):
