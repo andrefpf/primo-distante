@@ -4,15 +4,15 @@ from time import time
 def xorshift_32(seed):
     modulus = 1 << 32
     while True:
-        seed ^= seed >> 13
+        seed ^= seed << 13
         seed ^= seed >> 17
         seed ^= seed << 5
         yield seed % modulus
 
 
 def lcg_32(seed):
-    multiplier = 1664525
-    increment = 1013904223
+    multiplier = 1372383749
+    increment = 1289706101
     modulus = 1 << 32
     while True:
         seed = (multiplier * seed + increment) % modulus

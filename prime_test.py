@@ -2,7 +2,7 @@ from random_generator import RandomGenerator
 from math import log2, ceil
 
 
-def miller_rabin(n: int, *, trials=10) -> bool:
+def miller_rabin(n: int, *, trials: int = 10) -> bool:
     """
     Test if n is (probably) prime.
     """
@@ -25,7 +25,7 @@ def miller_rabin(n: int, *, trials=10) -> bool:
         x = pow(a, d, n)
 
         for _ in range(s):
-            y = x * x % n
+            y = pow(x, 2, n)
             if y == 1 and x != 1 and x != n - 1:
                 return False
             x = y
@@ -36,7 +36,10 @@ def miller_rabin(n: int, *, trials=10) -> bool:
     return True
 
 
-def fermat(n: int) -> bool:
-    gen = RandomGenerator(num_bits=ceil(log2(n)))
-    a = gen.generate(2, n)
-    return pow(a, (n-1), n) == 1
+def fermat(n: int, *, trials: int = 10) -> bool:
+    for _ in range(trials):
+        gen = RandomGenerator(num_bits=ceil(log2(n)))
+        a = gen.generate(2, n)
+        if pow(a, (n - 1), n) != 1:
+            return False
+    return True

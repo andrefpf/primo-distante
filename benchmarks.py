@@ -14,13 +14,13 @@ def benchmark_xorshift():
     for size in number_sizes:
         gen.num_bits = size
         s = time()
-        for i in range(500):
+        for i in range(1_000):
             gen.generate()
         e = time()
-        print(size)
         table.append(["xorshift", f"{size} bits", f"{(e-s):.3f} sec"])
 
     print(tabulate(table, tablefmt="fancy_grid"))
+    print(tabulate(table, tablefmt="latex"))
 
 
 def benchmark_lcg():
@@ -32,67 +32,90 @@ def benchmark_lcg():
     for size in number_sizes:
         gen.num_bits = size
         s = time()
-        for i in range(500):
+        for i in range(1_000):
             gen.generate()
         e = time()
-        print(size)
         table.append(["lcg", f"{size} bits", f"{(e-s):.3f} sec"])
 
     print(tabulate(table, tablefmt="fancy_grid"))
+    print(tabulate(table, tablefmt="latex"))
 
 
 def benchmark_fermat():
-    number_sizes = [40, 56, 80, 128, 168, 224, 256, 512, 1024, 2048, 4096]
+    number_sizes = [40, 56, 80, 128, 168, 224, 256, 512, 1024, 4096]
 
     table = []
-
     for size in number_sizes:
         s = time()
         prime = generate_prime(size, xorshift_32, fermat)
         e = time()
-        row = ["Fermat + xorshift", f"{size} bits", f"prime found: {prime}", f"{(e-s):.3f} sec"]
-        print(size)
+        row = [
+            "Fermat + xorshift",
+            f"{size} bits",
+            f"prime found: {prime}",
+            f"{(e-s):.3f} sec",
+        ]
         table.append(row)
-    print()
 
+    print(tabulate(table, tablefmt="fancy_grid"))
+    print(tabulate(table, tablefmt="latex"))
+
+    table = []
     for size in number_sizes:
         s = time()
         prime = generate_prime(size, lcg_32, fermat)
         e = time()
-        print(size)
-        row = ["Fermat + LCG", f"{size} bits", f"prime found: {prime}", f"{(e-s):.3f} sec"]
+        row = [
+            "Fermat + LCG",
+            f"{size} bits",
+            f"prime found: {prime}",
+            f"{(e-s):.3f} sec",
+        ]
         table.append(row)
 
     print(tabulate(table, tablefmt="fancy_grid"))
+    print(tabulate(table, tablefmt="latex"))
 
 
 def benchmark_miller_rabin():
-    number_sizes = [40, 56, 80, 128, 168, 224, 256, 512, 1024, 2048, 4096]
+    number_sizes = [40, 56, 80, 128, 168, 224, 256, 512, 1024, 4096]
 
     table = []
-
     for size in number_sizes:
         s = time()
         prime = generate_prime(size, xorshift_32, miller_rabin)
         e = time()
-        row = ["Miller Rabin + xorshift", f"{size} bits", f"prime found: {prime}", f"{(e-s):.3f} sec"]
-        print(size)
+        row = [
+            "Miller Rabin + xorshift",
+            f"{size} bits",
+            f"prime found: {prime}",
+            f"{(e-s):.3f} sec",
+        ]
         table.append(row)
-    print()
 
+    print(tabulate(table, tablefmt="fancy_grid"))
+    print(tabulate(table, tablefmt="latex"))
+
+    table = []
     for size in number_sizes:
         s = time()
         prime = generate_prime(size, lcg_32, miller_rabin)
         e = time()
-        row = ["Miller Rabin + LCG", f"{size} bits", f"prime found: {prime}", f"{(e-s):.3f} sec"]
-        print(size)
+        row = [
+            "Miller Rabin + LCG",
+            f"{size} bits",
+            f"prime found: {prime}",
+            f"{(e-s):.3f} sec",
+        ]
         table.append(row)
 
     print(tabulate(table, tablefmt="fancy_grid"))
+    print(tabulate(table, tablefmt="latex"))
 
 
-benchmark_xorshift()
-benchmark_lcg()
+if __name__ == "__main__":
+    benchmark_xorshift()
+    benchmark_lcg()
 
-benchmark_fermat()
-benchmark_miller_rabin()
+    benchmark_fermat()
+    benchmark_miller_rabin()
