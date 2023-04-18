@@ -4,7 +4,16 @@ from math import log2, ceil
 
 def miller_rabin(n: int, *, trials: int = 10) -> bool:
     """
-    Test if n is (probably) prime.
+    O teste de primalidade de miller rabin é baseado em uma generalização do 
+    pequeno teorema de Fermat.
+
+    No caso onde todas as bases possíveis são testadas, este algoritmo seria
+    determinístico e a resposta sempre seria correta. Porém a complexidade 
+    seria exponencial, tornando inviável a utilização em computadores atuais.
+
+    Para contornar o problema o teste é feito de maneira probabilística, testando
+    com um número grande de bases escolhidas aleatóriamente e torcendo para que
+    os deuses da probabilidade não tenha escolhido justamente as piores possíveis.
     """
 
     if n % 2 == 0:
@@ -37,6 +46,19 @@ def miller_rabin(n: int, *, trials: int = 10) -> bool:
 
 
 def fermat(n: int, *, trials: int = 10) -> bool:
+    '''
+    Este teste é baseado do pequeno teorema de Fermat, 
+    que afirma que a^(p-1) ≡ 1 (mod p) desde que p seja um número
+    primo e que a seja menor do que p. 
+
+    O teste funciona de maneira inversa, pois qualquer número primo passa
+    no teste, mas não necessariamente SÓ numeros primos passam. Para ter um
+    pouco mais de certeza do resultado o teste é feito <trials> vezes.
+
+    Apesar disso é sabido que ainda existem números pseudoprimos que passam neste
+    teste independente da base escolhida. 
+    '''
+
     for _ in range(trials):
         gen = RandomGenerator(num_bits=ceil(log2(n)))
         a = gen.generate(2, n)
