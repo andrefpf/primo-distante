@@ -14,7 +14,7 @@ def miller_rabin(n: int, *, trials: int = 10) -> bool:
     # (2 ** s) * d == n - 1
     s = 0
     d = n - 1
-    while s % 2 == 0:
+    while d % 2 == 0:
         s += 1
         d //= 2
 
